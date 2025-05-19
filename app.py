@@ -6,29 +6,28 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import re
 
-# Flask uygulamasını başlat
+
 app = Flask(__name__)
 
-# Template ve static klasörlerini belirtiyoruz
+
 app.template_folder = 'templates'
 app.static_folder = 'static'
 
-# Modelleri yükle
+
 try:
     model = load_model("nl2sql_seq2seq_model.keras")
     encoder_model = load_model("encoder_model.keras")
     decoder_model = load_model("decoder_model.keras")
     
-    # Tokenizer'ları yükle
+    
     with open('tokenizer_input.pkl', 'rb') as f:
         input_tokenizer = pickle.load(f)
     
     with open('tokenizer_target.pkl', 'rb') as f:
         target_tokenizer = pickle.load(f)
     
-    # Tokenizer sözlüklerini oluştur
     reverse_target_word_index = {i: word for word, i in target_tokenizer.word_index.items()}
-    max_encoder_len = 100  # encoder_model.input_shape[1] kullanabilirsiniz
+    max_encoder_len = 100  
     max_decoder_len = 100
     
     print("Modeller ve tokenizer'lar başarıyla yüklendi!")
@@ -73,25 +72,24 @@ def predict_query(input_sentence):
 
     return decoded_sentence.strip()
 
-# Anasayfa için route
+
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# Modeli çalıştıracak route
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Kullanıcıdan gelen girdi metnini al
+        
         input_text = request.form.get('input_text', '')
         
         if not input_text:
             return jsonify({"error": "Lütfen bir metin girin"}), 400
         
-        # Modeli kullanarak tahmin yap
+       
         prediction = predict_query(input_text)
         
-        # Tahmin sonucunu JSON olarak döndür
         return jsonify({
             "input_text": input_text,
             "sql_query": prediction
@@ -100,6 +98,5 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# Uygulamayı çalıştır
 if __name__ == '__main__':
     app.run(debug=True)
