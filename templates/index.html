@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NL2SQL Çevirici</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-3">Doğal Dilden SQL Çevirici</h1>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Doğal dilde yazılmış sorguları otomatik olarak SQL sorgusuna dönüştürün.
+            </p>
+        </header>
+
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
+                <div class="p-8">
+                    <form id="translationForm">
+                        <div class="mb-6">
+                            <label for="input_text" class="block text-gray-700 text-lg font-semibold mb-3">
+                                <i class="fas fa-keyboard text-blue-500 mr-2"></i>Doğal Dil Sorgunuz
+                            </label>
+                            <textarea 
+                                id="input_text" 
+                                name="input_text" 
+                                rows="4" 
+                                class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                                placeholder="Örnek: Müşteri tablosundan ismi 'Ahmet' olan ve yaşı 30'dan büyük olan kayıtları getir"
+                                required
+                            ></textarea>
+                        </div>
+                        
+                        <button 
+                            type="submit" 
+                            id="submitBtn"
+                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition duration-200 transform hover:-translate-y-0.5 flex items-center justify-center"
+                        >
+                            <span id="buttonText">SQL Sorgusuna Çevir</span>
+                            <div id="buttonLoader" class="hidden ml-2">
+                                <div class="loader"></div>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="result" class="hidden bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800">
+                            <i class="fas fa-database text-blue-500 mr-2"></i>Oluşturulan SQL Sorgusu
+                        </h2>
+                        <button 
+                            id="copyBtn"
+                            class="text-sm bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium py-2 px-4 rounded-lg transition duration-200"
+                            title="Kopyala"
+                        >
+                            <i class="far fa-copy mr-1"></i> Kopyala
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-4 overflow-x-auto">
+                        <pre id="sql_output" class="text-green-400 font-mono text-sm whitespace-pre-wrap"></pre>
+                    </div>
+
+                    <div id="successMessage" class="mt-4 text-green-600 text-sm font-medium hidden">
+                        <i class="fas fa-check-circle mr-1"></i> SQL sorgusu panoya kopyalandı!
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mt-8">
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-500 text-2xl mb-3">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Kolay Kullanım</h3>
+                    <p class="text-gray-600 text-sm">Sadece ne istediğinizi yazın, gerisini biz halledelim.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-500 text-2xl mb-3">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Hızlı Sonuç</h3>
+                    <p class="text-gray-600 text-sm">Saniyeler içinde SQL sorgunuzu oluşturun.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="text-blue-500 text-2xl mb-3">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Güvenilir</h3>
+                    <p class="text-gray-600 text-sm">Gelişmiş yapay zeka ile doğru sonuçlar.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-16 text-center text-gray-500 text-sm">
+            <p>© NL2SQL Çevirici.</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
