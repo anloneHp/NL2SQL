@@ -1,7 +1,7 @@
 # NL2SQL Web Application
 Bu uygulama doğal dil sorgularını SQL sorgularına çeviren bir web uygulamasıdır. Kullanıcıların doğal dilde yazdığı sorguları SQL sorgularına dönüştürerek veritabanı sorgulamasını kolaylaştırır.
 
-##Ornek Gorseller
+## Ornek Gorseller
 ![Ekran görüntüsü 2025-05-19 134600](https://github.com/user-attachments/assets/69c4832a-b26a-4c45-aeba-962dde52f162)
 ![Ekran görüntüsü 2025-05-19 134645](https://github.com/user-attachments/assets/720d5c6c-487a-48da-8ace-bcf040fef25c)
 ![Ekran görüntüsü 2025-05-19 135339](https://github.com/user-attachments/assets/a974bb96-fa47-46b3-8092-f7daaf146f34)
