@@ -14,7 +14,7 @@ Bu uygulama doğal dil sorgularını SQL sorgularına çeviren bir web uygulamas
 - Sequence-to-sequence mimarisi
 - Türkçe metin işleme desteği
 
-##Veri Seti
+## Veri Seti
 train.csv: doğal dil - SQL eşleşmeleri
 turkish_query_answ_sql.csv: Türkçe doğal dil - SQL eşleşmeleri
 train_finetune.xlsx
@@ -25,7 +25,7 @@ Doğal dil girişleri küçük harfe çevrilmiş ve gereksiz boşluklar kaldır�
 
 SQL sorguları normalize edilerek, sabit değerler <value> ile değiştirilmiş ve sembollerin etrafına boşluklar eklenmiştir.
 
-##Model Mimarisi
+## Model Mimarisi
 Model, seq2seq mimarisi üzerine kurulmuştur:
 
 Encoder: BiLSTM (256 boyutlu, çift yönlü)
@@ -36,7 +36,7 @@ Embedding: Hem encoder hem decoder için ayrı
 
 Output: Dense katman ile softmax
 
-##Eğitim
+## Eğitim
 Model sparse_categorical_crossentropy kaybı ile eğitilmiştir.
 EarlyStopping ve ModelCheckpoint kullanılmıştır.
 
@@ -44,8 +44,8 @@ En iyi model best_model_nl2sql_seq2seq.keras olarak kaydedilir.
 encoder ve decoder modeller kaydedilir 
 tokenizasyonlar kaydedilir
 
-
-##Değerlendirme
+ 
+## Değerlendirme
 Modelin çıktısı aşağıdaki metriklerle değerlendirilmiştir:
 
 BLEU Score
@@ -67,7 +67,7 @@ Değerlendirme sonrası skorlar grafik olarak görselleştirilmiştir.
 - **Max Input/Output Uzunluğu**: 100 token
 - 
  
-##Kullanılan Kütüphaneler
+## Kullanılan Kütüphaneler
 TensorFlow / Keras
 
 pandas
